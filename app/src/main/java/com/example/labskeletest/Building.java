@@ -15,17 +15,14 @@ public class Building {
 
 
 
-    private final Building IT_BLDG = new Building("Dept of Information Technology\n(CEIT)" , "P.O. Box 8150 Statesboro, GA 30460" , "(912) 478-4848" , 14 , true ,32.423297, -81.786482 );
-    private final Building COBA = new Building("Parker College of Business\n(COBA)" , "621 C.O.B.A. Dr, Statesboro, GA 30460" , "(912) 478-2622" ,3 , true , 32.422637,  -81.786070);
-    private final Building ENGR_BLDG = new Building("Engineering Building\n(MENG)" , "847 Plant Dr Statesboro GA 30460 Plant Dr, Statesboro, GA 30460" , "(912) 478-7412" ,4 , true , 32.421791, -81.785665);
-    private final Building COE = new Building("College of Education\n(COE)" , "275 C.O.E. Drive, Statesboro, GA 30460" , "(912) 478-5648" ,5 , true , 32.422085, -81.788318);
+    //private Building IT_BLDG = new Building("Dept of Information Technology\n(CEIT)" , "P.O. Box 8150 Statesboro, GA 30460" , "(912) 478-4848" , 14 , true ,32.423297, -81.786482 );
+//    private  Building COBA = new Building("Parker College of Business\n(COBA)" , "621 C.O.B.A. Dr, Statesboro, GA 30460" , "(912) 478-2622" ,3 , true , 32.422637,  -81.786070);
+  //  private  Building ENGR_BLDG = new Building("Engineering Building\n(MENG)" , "847 Plant Dr Statesboro GA 30460 Plant Dr, Statesboro, GA 30460" , "(912) 478-7412" ,4 , true , 32.421791, -81.785665);
+  //  private  Building COE = new Building("College of Education\n(COE)" , "275 C.O.E. Drive, Statesboro, GA 30460" , "(912) 478-5648" ,5 , true , 32.422085, -81.788318);
 
 
 
     Building(){}
-    public Building getIT_BLDG() {
-        return IT_BLDG;
-    }
 
     Building(String name , String address , String phoneNumber , int noOfLabs , boolean isOneLabFree ,ArrayList<Lab> listOflabs  , double lat , double lng){
         bldgName = name;

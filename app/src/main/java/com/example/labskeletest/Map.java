@@ -35,7 +35,7 @@ public class Map extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ArrayList<Building> listOfBldgs;
-    Building b = new Building();
+    Building b = new Building("Dept of Information Technology\n(CEIT)" , "P.O. Box 8150 Statesboro, GA 30460" , "(912) 478-4848" , 14 , true ,32.423297, -81.786482 );
     MapView mMapView;
     private GoogleMap googleMap;
     // TODO: Rename and change types of parameters
@@ -110,7 +110,7 @@ public class Map extends Fragment {
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 MarkerInfoWindowAdapter markerInfoWindowAdapter = new MarkerInfoWindowAdapter(getContext());
 
-                markerInfoWindowAdapter.setB(b.IT_BLDG);
+                markerInfoWindowAdapter.setB(b);
                 googleMap.setInfoWindowAdapter(markerInfoWindowAdapter);
 
             }
