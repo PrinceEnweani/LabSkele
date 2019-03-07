@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements Favorites.OnFragm
 //    private ArrayList<String> listBuildingHeader;
 //    private HashMap<String, java.util.List<String>> listHashMap;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

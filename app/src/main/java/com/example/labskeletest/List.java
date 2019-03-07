@@ -10,7 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -23,11 +26,19 @@ import java.util.HashMap;
  * Use the {@link List#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+
+
+
 public class List extends Fragment  {
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     private ArrayList<String> listBuildingHeader;
     private HashMap<String, java.util.List<String>> listHashMap;
+    //DB TEST
+    DBConfiguration dbc = new DBConfiguration();
+    DBAccess db = new DBAccess();
+    ResultSet computersRS;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -134,6 +145,12 @@ public class List extends Fragment  {
         initData();
         listAdapter = new ExpandableListAdapter(getActivity(), listBuildingHeader, listHashMap);
         listView.setAdapter(listAdapter);
+
+        try {
+            test();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return inflatedView;
         //return inflater.inflate(R.layout.fragment_list, container, false);
 
@@ -176,5 +193,20 @@ public class List extends Fragment  {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void test() throws SQLException {
+        DBAccess dba = new DBAccess();
+        computersRS = dba.getComputers("1201");
+        ArrayList<Computer> listOfComputers = new ArrayList<Computer>();
+
+        if(computersRS == null){
+            //DO SOMETHING
+        }else{
+            while(computersRS.next()){
+
+                System.out.println("I AM WORKING" + ":" + computersRS.getString("host"));
+            }
+        }
     }
 }
