@@ -15,9 +15,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List <String> listDataHeader;
-    private HashMap<String,List<String>> listHashMap;
+    private HashMap<String,List<Lab>> listHashMap;
 
-    public ExpandableListAdapter(Context content, List<String> listDataHeader, HashMap<String, List<String>> listHashMap) {
+    public ExpandableListAdapter(Context content, List<String> listDataHeader, HashMap<String, List<Lab>> listHashMap) {
         this.context = content;
         this.listDataHeader = listDataHeader;
         this.listHashMap = listHashMap;
@@ -74,14 +74,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup parent) {
-        final String childText = (String) getChild(groupPosition, childPosition);
+        final Lab childText = (Lab) getChild(groupPosition, childPosition);
         if(view == null){
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.listitem, null);
         }
 
-        TextView childLabel = (TextView) view.findViewById(R.id.lvItems);
-        childLabel.setText(childText);
+        TextView childLabel = (TextView) view.findViewById(R.id.tvLabNumber);
+        childLabel.setText(childText.getRoom());
         return view;
     }
 

@@ -34,7 +34,7 @@ public class List extends Fragment  {
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     private ArrayList<String> listBuildingHeader;
-    private HashMap<String, java.util.List<String>> listHashMap;
+    private HashMap<String, java.util.List<Lab>> listHashMap;
     //DB TEST
     DBConfiguration dbc = new DBConfiguration();
     DBAccess db = new DBAccess();
@@ -88,48 +88,42 @@ public class List extends Fragment  {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        //setContentView(R.id.listView);
-//        listView = (ExpandableListView) .findViewById(R.id.listView);
-//        listView = (ExpandableListView) inflatedView.findViewById(R.id.listView);
-//        initData();
-//        listAdapter = new ExpandableListAdapter(getActivity(), listBuildingHeader, listHashMap);
-//        listView.setAdapter(listAdapter);
     }
     public void initData(){
 
-        listHashMap = new HashMap<String, java.util.List<String>>();
+        listHashMap = new HashMap<String, java.util.List<Lab>>();
         listBuildingHeader = new ArrayList<>();
 
         listBuildingHeader.add("IT Building");
-        ArrayList<String> listOfLabsIT = populateLabList(listBuildingHeader.get(0));
+        ArrayList<Lab> listOfLabsIT = populateLabList(listBuildingHeader.get(0));
 
         listHashMap.put(listBuildingHeader.get(0),listOfLabsIT);
 
         listBuildingHeader.add("COBA Building");
-        ArrayList<String> listOfLabsCOBA = populateLabList(listBuildingHeader.get(1));
+        ArrayList<Lab> listOfLabsCOBA = populateLabList(listBuildingHeader.get(1));
 
         listHashMap.put(listBuildingHeader.get(1),listOfLabsCOBA);
     }
 
-    public ArrayList<String> populateLabList(String building){
+    public ArrayList<Lab> populateLabList(String building){
 
-        ArrayList<String> listOfLabs = new ArrayList<String>();
+        ArrayList<Lab> listOfLabs = new ArrayList<Lab>();
 
         if(building == "IT Building") {
-            listOfLabs.add("1201");
-            listOfLabs.add("1202");
-            listOfLabs.add("1203");
-            listOfLabs.add("1204");
-            listOfLabs.add("1303");
-            listOfLabs.add("2204");
-            listOfLabs.add("2208");
-            listOfLabs.add("2210");
-            listOfLabs.add("2212");
-            listOfLabs.add("3208");
-            listOfLabs.add("3210");
-            listOfLabs.add("3212");
-            listOfLabs.add("3302");
-            listOfLabs.add("3314");
+            listOfLabs.add(new Lab("1201"));
+            listOfLabs.add(new Lab("1202"));
+            listOfLabs.add(new Lab("1203"));
+            listOfLabs.add(new Lab("1204"));
+            listOfLabs.add(new Lab("1303"));
+            listOfLabs.add(new Lab("2204"));
+            listOfLabs.add(new Lab("2208"));
+            listOfLabs.add(new Lab("2210"));
+            listOfLabs.add(new Lab("2212"));
+            listOfLabs.add(new Lab("3208"));
+            listOfLabs.add(new Lab("3210"));
+            listOfLabs.add(new Lab("3212"));
+            listOfLabs.add(new Lab("3302"));
+            listOfLabs.add(new Lab("3314"));
         }
 
         return listOfLabs;
@@ -153,7 +147,6 @@ public class List extends Fragment  {
         }
         return inflatedView;
         //return inflater.inflate(R.layout.fragment_list, container, false);
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event
