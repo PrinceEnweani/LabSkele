@@ -1,6 +1,7 @@
 package com.example.labskeletest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -35,10 +36,12 @@ public class List extends Fragment  {
     private ExpandableListAdapter listAdapter;
     private ArrayList<String> listBuildingHeader;
     private HashMap<String, java.util.List<String>> listHashMap;
+    private String labClicked;
+    private Context myContext;
     //DB TEST
-    DBConfiguration dbc = new DBConfiguration();
-    DBAccess db = new DBAccess();
-    ResultSet computersRS;
+//    DBConfiguration dbc = new DBConfiguration();
+//    DBAccess db = new DBAccess();
+//    ResultSet computersRS;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -145,12 +148,22 @@ public class List extends Fragment  {
         initData();
         listAdapter = new ExpandableListAdapter(getActivity(), listBuildingHeader, listHashMap);
         listView.setAdapter(listAdapter);
+        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                ExpandableListAdapter eListAdapter = (ExpandableListAdapter)parent.getExpandableListAdapter();
+                String item = (String) eListAdapter.getChild(groupPosition, childPosition);
+                setLabClicked(item);
+                return false;
+            }
+        });
 
-        try {
-            test();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            test();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
         return inflatedView;
         //return inflater.inflate(R.layout.fragment_list, container, false);
 
@@ -194,19 +207,12 @@ public class List extends Fragment  {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    public void setLabClicked(String lab){
 
-    public void test() throws SQLException {
-        DBAccess dba = new DBAccess();
-        computersRS = dba.getComputers("1201");
-        ArrayList<Computer> listOfComputers = new ArrayList<Computer>();
 
-        if(computersRS == null){
-            //DO SOMETHING
-        }else{
-            while(computersRS.next()){
-
-                System.out.println("I AM WORKING" + ":" + computersRS.getString("host"));
-            }
-        }
+        Intent i = new Intent(getActivity(), LabInformation.class);
+        i.putExtra("labClicked", lab);
+        startActivity(i);
     }
+
 }

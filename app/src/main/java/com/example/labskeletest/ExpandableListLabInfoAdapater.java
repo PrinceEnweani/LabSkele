@@ -1,25 +1,22 @@
 package com.example.labskeletest;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
-
+public class ExpandableListLabInfoAdapater extends BaseExpandableListAdapter {
     private Context context;
-    private List <String> listDataHeader;
-    private HashMap<String,List<String>> listHashMap;
+    private java.util.List<String> listDataHeader;
+    private HashMap<String,java.util.List<String>> listHashMap;
 
-    public ExpandableListAdapter(Context content, List<String> listDataHeader, HashMap<String, List<String>> listHashMap) {
+    public ExpandableListLabInfoAdapater(Context content, java.util.List<String> listDataHeader, HashMap<String, List<String>> listHashMap) {
         this.context = content;
         this.listDataHeader = listDataHeader;
         this.listHashMap = listHashMap;
