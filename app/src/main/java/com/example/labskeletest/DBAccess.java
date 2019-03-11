@@ -69,6 +69,79 @@ public class DBAccess extends AsyncTask<Void , Void , Void> {
         }
         return rs;
     }
+
+    public ResultSet getOccupancy(String lab){
+        conn = getConnection(dbc.getUserName() , dbc.getPassword() , dbc.getDb() , dbc.getServerName());
+        String query = "Use lablocator; select COUNT(*) AS InUse from machine_info where host LIKE '%CEIT255" + lab + "%' AND occupied='1';";
+        System.out.println(query);
+
+        try{
+            Log.i("Conn status", String.valueOf(conn.isClosed()));
+            Statement stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+            System.out.println("worked good");
+        }catch(SQLException e){
+            System.out.println("broke bad");
+            e.printStackTrace();
+        }
+        return rs;
+    }
+    public ResultSet getTotalComputers(String lab){
+        conn = getConnection(dbc.getUserName() , dbc.getPassword() , dbc.getDb() , dbc.getServerName());
+        String query = "Use lablocator; select COUNT(*) AS Total from machine_info where host LIKE '%CEIT255" + lab + "%';";
+        System.out.println(query);
+        try{
+            Log.i("Conn status", String.valueOf(conn.isClosed()));
+            Statement stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
+    public void saveFavorite(String UUID, String lab){
+        conn = getConnection(dbc.getUserName() , dbc.getPassword() , dbc.getDb() , dbc.getServerName());
+        String query = "Use lablocator; Insert into favorites (UUID, LabID) values ('" + UUID + "','CEIT255" + lab + "');";
+        System.out.println(query);
+
+        try{
+            Log.i("Conn status", String.valueOf(conn.isClosed()));
+            Statement stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void saveUser(String UUID){
+        conn = getConnection(dbc.getUserName() , dbc.getPassword() , dbc.getDb() , dbc.getServerName());
+        String query = "Use lablocator; Insert into users (UUID) values ('" + UUID + "');";
+        System.out.println(query);
+
+        try{
+            Log.i("Conn status", String.valueOf(conn.isClosed()));
+            Statement stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public ResultSet getLabs(String building){
+        conn = getConnection(dbc.getUserName() , dbc.getPassword() , dbc.getDb() , dbc.getServerName());
+        String query = "Use lablocator; select * from labs where LabID ('" + building + "');";
+        System.out.println(query);
+
+        try{
+            Log.i("Conn status", String.valueOf(conn.isClosed()));
+            Statement stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return rs;
+    }
 }
 
     /*public ResultSet getLabs(String lab){

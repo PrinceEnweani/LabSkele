@@ -7,15 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List <String> listDataHeader;
     private HashMap<String,List<Lab>> listHashMap;
+
+    DBConfiguration dbc = new DBConfiguration();
+    DBAccess db = new DBAccess();
 
     public ExpandableListAdapter(Context content, List<String> listDataHeader, HashMap<String, List<Lab>> listHashMap) {
         this.context = content;
@@ -74,14 +79,32 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup parent) {
-        final Lab childText = (Lab) getChild(groupPosition, childPosition);
+        final Lab child = (Lab) getChild(groupPosition, childPosition);
         if(view == null){
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.listitem, null);
         }
 
-        TextView childLabel = (TextView) view.findViewById(R.id.tvLabNumber);
-        childLabel.setText(childText.getRoom());
+        TextView roomLabel = (TextView) view.findViewById(R.id.tvLabNumber);
+        roomLabel.setText(child.getRoom());
+
+        TextView percentLabel = (TextView) view.findViewById(R.id.tvLabPercent);
+        percentLabel.setText(child.getPercentage());
+
+        ToggleButton favoriteBtn = (ToggleButton) view.findViewById(R.id.toggleButton);
+
+        favoriteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("Favorite has been clicked. Lab room:" + child.getRoom());
+
+                String UUID = MainActivity.uniqueID;
+                String room = child.getRoom();
+                db = new DBAccess();
+                db.saveFavorite(UUID, room);
+            }
+        });
+
         return view;
     }
 

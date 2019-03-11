@@ -1,5 +1,7 @@
 package com.example.labskeletest;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -10,6 +12,7 @@ import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements Favorites.OnFragmentInteractionListener, Map.OnFragmentInteractionListener,List.OnFragmentInteractionListener {
 //Connection object
@@ -18,11 +21,34 @@ public class MainActivity extends AppCompatActivity implements Favorites.OnFragm
 //    private ArrayList<String> listBuildingHeader;
 //    private HashMap<String, java.util.List<String>> listHashMap;
 
+    static String uniqueID = null;
+    private static final String PREF_UNIQUE_ID = "PREF_UNOQUE_ID";
+    DBConfiguration dbc = new DBConfiguration();
+    DBAccess db = new DBAccess();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Context context = getApplicationContext();
+
+
+        if(uniqueID == null){
+            SharedPreferences sharedPrefs = context.getSharedPreferences(PREF_UNIQUE_ID, Context.MODE_PRIVATE);
+            uniqueID = sharedPrefs.getString(PREF_UNIQUE_ID,null);
+
+            if(uniqueID == null){
+                uniqueID = UUID.randomUUID().toString();
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putString(PREF_UNIQUE_ID, uniqueID);
+                editor.commit();
+
+                db.saveUser(uniqueID);
+
+            }
+        }
+        System.out.println("Unique ID is: " + uniqueID);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
          tabLayout.addTab(tabLayout.newTab());
@@ -105,5 +131,9 @@ public class MainActivity extends AppCompatActivity implements Favorites.OnFragm
 //
 //        return listOfLabs;
 //    }
+
+    public String getUUID(){
+        return uniqueID;
+    }
 
 }

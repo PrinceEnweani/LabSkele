@@ -27,7 +27,6 @@ public class DBConfiguration {
         this.db = db;
     }
 
-
     public String getConnectionStr() {
         return connectionStr;
     }
@@ -59,8 +58,5 @@ public class DBConfiguration {
     public void setDriver(String driver) {
         this.driver = driver;
     }
-
-
-
 
 }

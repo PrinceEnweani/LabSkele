@@ -7,6 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -18,6 +25,12 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class Favorites extends Fragment {
+
+    private ExpandableListView listView;
+    private ExpandableListAdapter listAdapter;
+    private ArrayList<String> listBuildingHeader;
+    private HashMap<String, List<Lab>> listHashMap;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -26,6 +39,9 @@ public class Favorites extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    static ListView testList;
+    static View inflatedView = null;
 
     private OnFragmentInteractionListener mListener;
 
@@ -63,8 +79,24 @@ public class Favorites extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        testList = container.findViewById(R.id.listViewFavorites);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorites, container, false);
+        inflatedView = inflater.inflate(R.layout.fragment_list, container, false);
+        listView = (ExpandableListView) inflatedView.findViewById(R.id.listView);
+        initData();
+        listAdapter = new ExpandableListAdapter(getActivity(), listBuildingHeader, listHashMap);
+        listView.setAdapter(listAdapter);
+
+        /*try {
+            test();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }*/
+
+        return inflatedView;
+        //return inflater.inflate(R.layout.fragment_favorites, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -104,5 +136,25 @@ public class Favorites extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void initData(){
+
+        listHashMap = new HashMap<String, java.util.List<Lab>>();
+        listBuildingHeader = new ArrayList<>();
+
+        listBuildingHeader.add("Favorites");
+        ArrayList<Lab> listOfFavorites = populateFavoritesList("UserID");  //Needs to be changed to user/phone ID
+
+        listHashMap.put(listBuildingHeader.get(0),listOfFavorites);
+
+    }
+
+    public ArrayList<Lab> populateFavoritesList(String userID){
+
+        ArrayList<Lab> listOfLabs = new ArrayList<Lab>();
+
+
+        return listOfLabs;
     }
 }

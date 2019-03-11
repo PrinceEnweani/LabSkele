@@ -1,5 +1,7 @@
 package com.example.labskeletest;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Lab {
@@ -7,9 +9,33 @@ public class Lab {
     private String room;
     private String schedule;
     ArrayList <String> softwareList = new <String> ArrayList();
+    private int inUseComputers;
+    private int totalComputers;
 
-    Lab(String room){
-        this.room = room;
+    Lab(String labRoom){
+        room = labRoom;
+
+        try {
+            getItemStatus();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public void getItemStatus() throws SQLException {
+
+        DBAccess dba = new DBAccess();
+        ResultSet occupancy = dba.getOccupancy(room);
+
+        occupancy.next();
+        inUseComputers = occupancy.getInt("InUse");
+
+        occupancy = dba.getTotalComputers(room);
+
+        occupancy.next();
+        totalComputers = occupancy.getInt("Total");
     }
 
     public String getRoom() {
@@ -18,10 +44,7 @@ public class Lab {
 
     public String getPercentage() {
 
-        int inUse = 0;
-        int total = 0;
-
-        String percentage = inUse + "/" + total;
+        String percentage = inUseComputers + "/" + totalComputers;
         return percentage;
     }
 
