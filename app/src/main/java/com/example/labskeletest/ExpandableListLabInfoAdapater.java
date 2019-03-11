@@ -80,7 +80,7 @@ public class ExpandableListLabInfoAdapater extends BaseExpandableListAdapter {
             view = inflater.inflate(R.layout.listitem, null);
         }
 
-        final TextView childLabel = (TextView) view.findViewById(R.id.lvItems);
+        final TextView childLabel = (TextView) view.findViewById(R.id.tvLabNumber);
         childLabel.setText(childText);
         return view;
     }

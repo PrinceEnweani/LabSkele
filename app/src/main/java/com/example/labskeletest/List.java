@@ -12,13 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
-
+import android.annotation.SuppressLint;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-
+import android.telephony.TelephonyManager;
+import android.widget.ToggleButton;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -35,14 +35,14 @@ public class List extends Fragment  {
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     private ArrayList<String> listBuildingHeader;
-    private HashMap<String, java.util.List<String>> listHashMap;
+    private HashMap<String, java.util.List<Lab>> listHashMap;
     private String labClicked;
     private Context myContext;
     //DB TEST
 //    DBConfiguration dbc = new DBConfiguration();
 //    DBAccess db = new DBAccess();
 //    ResultSet computersRS;
-
+    DBAccess dba = new DBAccess();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -100,39 +100,40 @@ public class List extends Fragment  {
     }
     public void initData(){
 
-        listHashMap = new HashMap<String, java.util.List<String>>();
+        listHashMap = new HashMap<String, java.util.List<Lab>>();
         listBuildingHeader = new ArrayList<>();
 
         listBuildingHeader.add("IT Building");
-        ArrayList<String> listOfLabsIT = populateLabList(listBuildingHeader.get(0));
-
+       // ArrayList<String> listOfLabsIT = populateLabList(listBuildingHeader.get(0));
+        ArrayList<Lab> listOfLabsIT = populateLabList(listBuildingHeader.get(0));
         listHashMap.put(listBuildingHeader.get(0),listOfLabsIT);
 
         listBuildingHeader.add("COBA Building");
-        ArrayList<String> listOfLabsCOBA = populateLabList(listBuildingHeader.get(1));
-
+        //ArrayList<String> listOfLabsCOBA = populateLabList(listBuildingHeader.get(1));
+        ArrayList<Lab> listOfLabsCOBA = populateLabList(listBuildingHeader.get(1));
         listHashMap.put(listBuildingHeader.get(1),listOfLabsCOBA);
     }
 
-    public ArrayList<String> populateLabList(String building){
+    public ArrayList<Lab> populateLabList(String building){
 
-        ArrayList<String> listOfLabs = new ArrayList<String>();
+        ArrayList<Lab> listOfLabs = new ArrayList<Lab>();
+        dba = new DBAccess();
 
         if(building == "IT Building") {
-            listOfLabs.add("1201");
-            listOfLabs.add("1202");
-            listOfLabs.add("1203");
-            listOfLabs.add("1204");
-            listOfLabs.add("1303");
-            listOfLabs.add("2204");
-            listOfLabs.add("2208");
-            listOfLabs.add("2210");
-            listOfLabs.add("2212");
-            listOfLabs.add("3208");
-            listOfLabs.add("3210");
-            listOfLabs.add("3212");
-            listOfLabs.add("3302");
-            listOfLabs.add("3314");
+            listOfLabs.add(new Lab("1201"));
+            listOfLabs.add(new Lab("1202"));
+            listOfLabs.add(new Lab("1203"));
+            listOfLabs.add(new Lab("1204"));
+            listOfLabs.add(new Lab("1303"));
+            listOfLabs.add(new Lab("2204"));
+            listOfLabs.add(new Lab("2208"));
+            listOfLabs.add(new Lab("2210"));
+            listOfLabs.add(new Lab("2212"));
+            listOfLabs.add(new Lab("3208"));
+            listOfLabs.add(new Lab("3210"));
+            listOfLabs.add(new Lab("3212"));
+            listOfLabs.add(new Lab("3302"));
+            listOfLabs.add(new Lab("3314"));
         }
 
         return listOfLabs;
@@ -151,6 +152,7 @@ public class List extends Fragment  {
         listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                System.out.println("Lab Click listener has been engaged");
                 ExpandableListAdapter eListAdapter = (ExpandableListAdapter)parent.getExpandableListAdapter();
                 String item = (String) eListAdapter.getChild(groupPosition, childPosition);
                 setLabClicked(item);
@@ -208,8 +210,6 @@ public class List extends Fragment  {
         void onFragmentInteraction(Uri uri);
     }
     public void setLabClicked(String lab){
-
-
         Intent i = new Intent(getActivity(), LabInformation.class);
         i.putExtra("labClicked", lab);
         startActivity(i);
