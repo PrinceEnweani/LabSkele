@@ -108,6 +108,20 @@ public class DBAccess extends AsyncTask<Void , Void , Void> {
         try{
             Log.i("Conn status", String.valueOf(conn.isClosed()));
             Statement stmt = conn.createStatement();
+            stmt.executeQuery(query);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteFavorite(String UUID, String lab){
+        conn = getConnection(dbc.getUserName() , dbc.getPassword() , dbc.getDb() , dbc.getServerName());
+        String query = "Use lablocator; Delete from favorites where UUID = '" + UUID + "' and LabID = 'CEIT255" + lab + "';";
+        System.out.println(query);
+
+        try{
+            Log.i("Conn status", String.valueOf(conn.isClosed()));
+            Statement stmt = conn.createStatement();
             rs = stmt.executeQuery(query);
         }catch(SQLException e){
             e.printStackTrace();
@@ -130,7 +144,7 @@ public class DBAccess extends AsyncTask<Void , Void , Void> {
 
     public ResultSet getLabs(String building){
         conn = getConnection(dbc.getUserName() , dbc.getPassword() , dbc.getDb() , dbc.getServerName());
-        String query = "Use lablocator; select * from labs where LabID ('" + building + "');";
+        String query = "Use lablocator; select LabID from labs where LabID like '%" + building + "%';";
         System.out.println(query);
 
         try{
@@ -142,6 +156,22 @@ public class DBAccess extends AsyncTask<Void , Void , Void> {
         }
         return rs;
     }
+
+    public ResultSet getFavorites(String UUID){
+        conn = getConnection(dbc.getUserName() , dbc.getPassword() , dbc.getDb() , dbc.getServerName());
+        String query = "Use lablocator; Select LabID from favorites where UUID = '" + UUID + "'";
+        System.out.println(query);
+
+        try{
+            Log.i("Conn status", String.valueOf(conn.isClosed()));
+            Statement stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
 }
 
     /*public ResultSet getLabs(String lab){

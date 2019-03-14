@@ -91,17 +91,41 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView percentLabel = (TextView) view.findViewById(R.id.tvLabPercent);
         percentLabel.setText(child.getPercentage());
 
-        ToggleButton favoriteBtn = (ToggleButton) view.findViewById(R.id.toggleButton);
-
+        final ToggleButton favoriteBtn = (ToggleButton) view.findViewById(R.id.toggleButton);
+        final boolean isFavorite = MainActivity.listOfFavorites.contains(child.getRoom());
+        if(isFavorite){
+            favoriteBtn.setBackgroundResource(R.drawable.btn_favorite);
+            favoriteBtn.setChecked(true);
+        }else{
+            favoriteBtn.setBackgroundResource(R.drawable.btn_unfavorite);
+            favoriteBtn.setChecked(false);
+        }
         favoriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("Favorite has been clicked. Lab room:" + child.getRoom());
 
-                String UUID = MainActivity.uniqueID;
-                String room = child.getRoom();
-                db = new DBAccess();
-                db.saveFavorite(UUID, room);
+                System.out.println("Child.getRoom ----" + child.getRoom());
+                if(favoriteBtn.isChecked()) {
+                    favoriteBtn.setBackgroundResource(R.drawable.btn_favorite);
+                    String UUID = MainActivity.uniqueID;
+                    String room = child.getRoom();
+                    db = new DBAccess();
+                    db.saveFavorite(UUID, room);
+                }
+                else{
+                    favoriteBtn.setBackgroundResource(R.drawable.btn_unfavorite);
+                    String UUID = MainActivity.uniqueID;
+                    String room = child.getRoom();
+                    db = new DBAccess();
+                    db.deleteFavorite(UUID, room);
+
+                    for(int i = 0; i < MainActivity.listOfFavorites.size(); i++){
+                        if(MainActivity.listOfFavorites.get(i).contains(child.getRoom())){
+                            MainActivity.listOfFavorites.remove(i);
+                        }
+                    }
+                }
             }
         });
 

@@ -139,14 +139,28 @@ public class Favorites extends Fragment {
     }
 
     public void initData(){
-
+        MainActivity mainActivity = new MainActivity();
+        mainActivity.refreshFavoritesList();
         listHashMap = new HashMap<String, java.util.List<Lab>>();
         listBuildingHeader = new ArrayList<>();
 
         listBuildingHeader.add("Favorites");
-        ArrayList<Lab> listOfFavorites = populateFavoritesList("UserID");  //Needs to be changed to user/phone ID
+        ArrayList<Lab> listOfFavoritedLabs = new ArrayList<Lab>();
+        for(int i =0; i < MainActivity.listOfFavorites.size();i++){
+            for(int j = 0; j < MainActivity.listOfLabs.size();j++) {
+                System.out.println("List of Fav Lab " + i + " ---" + MainActivity.listOfFavorites.get(i).toString());
+                System.out.println("List of Labs " + i + "--- " + MainActivity.listOfLabs.get(j).getRoom());
+                if (MainActivity.listOfFavorites.get(i).contains(MainActivity.listOfLabs.get(j).getRoom())) {
+                    listOfFavoritedLabs.add(MainActivity.listOfLabs.get(j));
 
-        listHashMap.put(listBuildingHeader.get(0),listOfFavorites);
+                }
+            }
+        }
+
+        listHashMap.put(listBuildingHeader.get(0),listOfFavoritedLabs);
+
+
+
 
     }
 

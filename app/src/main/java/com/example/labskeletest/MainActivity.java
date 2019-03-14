@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -24,7 +26,9 @@ public class MainActivity extends AppCompatActivity implements Favorites.OnFragm
     static String uniqueID = null;
     private static final String PREF_UNIQUE_ID = "PREF_UNOQUE_ID";
     DBConfiguration dbc = new DBConfiguration();
-    DBAccess db = new DBAccess();
+    static DBAccess dba = new DBAccess();
+    public static ArrayList<Lab> listOfLabs = new ArrayList<Lab>();
+    public static  ArrayList<String> listOfFavorites = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +48,17 @@ public class MainActivity extends AppCompatActivity implements Favorites.OnFragm
                 editor.putString(PREF_UNIQUE_ID, uniqueID);
                 editor.commit();
 
-                db.saveUser(uniqueID);
+                dba.saveUser(uniqueID);
 
             }
         }
         System.out.println("Unique ID is: " + uniqueID);
+        populateLabList("CEIT");
+
+
+
+
+
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
          tabLayout.addTab(tabLayout.newTab());
@@ -134,6 +144,47 @@ public class MainActivity extends AppCompatActivity implements Favorites.OnFragm
 
     public String getUUID(){
         return uniqueID;
+    }
+
+    public void refreshFavoritesList(){
+        listOfFavorites = populateFavoritesList(uniqueID);
+    }
+    public ArrayList<String> populateFavoritesList(String UUID){
+        ArrayList<String> listOfFavorites = new ArrayList<String>();
+        try {
+            ResultSet rs = dba.getFavorites(uniqueID);
+            while (rs.next()) {
+                String lab = rs.getString("LabID");
+                lab = lab.substring(lab.length() - 4);
+
+                listOfFavorites.add(lab);
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return listOfFavorites;
+    }
+    public static void  populateLabList(String building){
+
+
+        dba = new DBAccess();
+
+        try {
+            ResultSet rs = dba.getLabs(building);
+
+            while (rs.next()) {
+                String lab = rs.getString("LabID");
+                lab = lab.substring(lab.length() - 4);
+
+                listOfLabs.add(new Lab(lab));
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+
+       // return listOfLabs;
     }
 
 }

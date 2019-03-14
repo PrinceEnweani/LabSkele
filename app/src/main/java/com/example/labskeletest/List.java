@@ -98,12 +98,15 @@ public class List extends Fragment  {
         listBuildingHeader = new ArrayList<>();
 
         listBuildingHeader.add("IT Building");
-        ArrayList<Lab> listOfLabsIT = populateLabList(listBuildingHeader.get(0));
+        //ArrayList<Lab> listOfLabsIT = populateLabList("CEIT"/*listBuildingHeader.get(0)*/);
+
+        MainActivity mainActivity = new MainActivity();
+        ArrayList<Lab> listOfLabsIT = MainActivity.listOfLabs;
 
         listHashMap.put(listBuildingHeader.get(0),listOfLabsIT);
 
         listBuildingHeader.add("COBA Building");
-        ArrayList<Lab> listOfLabsCOBA = populateLabList(listBuildingHeader.get(1));
+        ArrayList<Lab> listOfLabsCOBA = populateLabList("COBA"/*listBuildingHeader.get(1)*/);
 
         listHashMap.put(listBuildingHeader.get(1),listOfLabsCOBA);
     }
@@ -113,24 +116,18 @@ public class List extends Fragment  {
         ArrayList<Lab> listOfLabs = new ArrayList<Lab>();
         dba = new DBAccess();
 
+        try {
+                ResultSet rs = dba.getLabs(building);
 
-        if(building == "IT Building") {
+                while (rs.next()) {
+                    String lab = rs.getString("LabID");
+                    lab = lab.substring(lab.length() - 4);
 
-
-            listOfLabs.add(new Lab("1201"));
-            listOfLabs.add(new Lab("1202"));
-            listOfLabs.add(new Lab("1203"));
-            listOfLabs.add(new Lab("1204"));
-            listOfLabs.add(new Lab("1303"));
-            listOfLabs.add(new Lab("2204"));
-            listOfLabs.add(new Lab("2208"));
-            listOfLabs.add(new Lab("2210"));
-            listOfLabs.add(new Lab("2212"));
-            listOfLabs.add(new Lab("3208"));
-            listOfLabs.add(new Lab("3210"));
-            listOfLabs.add(new Lab("3212"));
-            listOfLabs.add(new Lab("3302"));
-            listOfLabs.add(new Lab("3314"));
+                    listOfLabs.add(new Lab(lab));
+                }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
         }
 
         return listOfLabs;
