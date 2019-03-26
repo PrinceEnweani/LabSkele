@@ -57,7 +57,7 @@ public class DBAccess extends AsyncTask<Void , Void , Void> {
     public ResultSet getComputers(String lab){
         conn = getConnection(dbc.getUserName() , dbc.getPassword() , dbc.getDb() , dbc.getServerName());
 
-        String query = "Use lablocator; select * from machine_info where host like '%" + lab + "X0%' order by host ASC;";
+        String query = "Use lablocator; select * from machine_info where host like '%." + lab + "X0%' order by host ASC;";
         //String query = "select * from INFORMATION_SCHEMA.COLUMNS";
         try{
 
@@ -72,7 +72,7 @@ public class DBAccess extends AsyncTask<Void , Void , Void> {
 
     public ResultSet getOccupancy(String lab){
         conn = getConnection(dbc.getUserName() , dbc.getPassword() , dbc.getDb() , dbc.getServerName());
-        String query = "Use lablocator; select COUNT(*) AS InUse from machine_info where host LIKE '%CEIT255" + lab + "%' AND occupied='1';";
+        String query = "Use lablocator; select COUNT(*) AS InUse from machine_info where host LIKE '%" + lab + "%' AND occupied='1';";
         System.out.println(query);
 
         try{
@@ -88,7 +88,7 @@ public class DBAccess extends AsyncTask<Void , Void , Void> {
     }
     public ResultSet getTotalComputers(String lab){
         conn = getConnection(dbc.getUserName() , dbc.getPassword() , dbc.getDb() , dbc.getServerName());
-        String query = "Use lablocator; select COUNT(*) AS Total from machine_info where host LIKE '%CEIT255" + lab + "%';";
+        String query = "Use lablocator; select COUNT(*) AS Total from machine_info where host LIKE '%" + lab + "%';";
         System.out.println(query);
         try{
             Log.i("Conn status", String.valueOf(conn.isClosed()));
@@ -102,7 +102,7 @@ public class DBAccess extends AsyncTask<Void , Void , Void> {
 
     public void saveFavorite(String UUID, String lab){
         conn = getConnection(dbc.getUserName() , dbc.getPassword() , dbc.getDb() , dbc.getServerName());
-        String query = "Use lablocator; Insert into favorites (UUID, LabID) values ('" + UUID + "','CEIT255" + lab + "');";
+        String query = "Use lablocator; Insert into favorites (UUID, LabID) values ('" + UUID + "','" + lab + "');";
         System.out.println(query);
 
         try{
@@ -114,9 +114,10 @@ public class DBAccess extends AsyncTask<Void , Void , Void> {
         }
     }
 
+    //CEIT255 will need to be changed when the COBA building is added
     public void deleteFavorite(String UUID, String lab){
         conn = getConnection(dbc.getUserName() , dbc.getPassword() , dbc.getDb() , dbc.getServerName());
-        String query = "Use lablocator; Delete from favorites where UUID = '" + UUID + "' and LabID = 'CEIT255" + lab + "';";
+        String query = "Use lablocator; Delete from favorites where UUID = '" + UUID + "' and LabID = '" + lab + "';";
         System.out.println(query);
 
         try{
@@ -172,20 +173,18 @@ public class DBAccess extends AsyncTask<Void , Void , Void> {
         return rs;
     }
 
-}
-
-    /*public ResultSet getLabs(String lab){
-
-        Connection conn = this.getConnection();
-
-        this.rs = null;
+    public ResultSet getSoftware(String lab){
+        conn = getConnection(dbc.getUserName() , dbc.getPassword() , dbc.getDb() , dbc.getServerName());
+        String query = "Use lablocator; Select Name from available_software where LabID = '" + lab + "'";
+        System.out.println(query);
 
         try{
+            Log.i("Conn status", String.valueOf(conn.isClosed()));
             Statement stmt = conn.createStatement();
-            String query = "select * from machine_info where host like '%" + lab + "%';";
-           this.rs =  stmt.executeQuery(query);
-        }catch (Exception e){
+            rs = stmt.executeQuery(query);
+        }catch(SQLException e){
             e.printStackTrace();
         }
-        return this.rs;
-    }*/
+        return rs;
+    }
+}

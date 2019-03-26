@@ -121,7 +121,7 @@ public class List extends Fragment  {
 
                 while (rs.next()) {
                     String lab = rs.getString("LabID");
-                    lab = lab.substring(lab.length() - 4);
+                    //lab = lab.substring(lab.length() - 4);
 
                     listOfLabs.add(new Lab(lab));
                 }

@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements Favorites.OnFragm
 
     static String uniqueID = null;
     private static final String PREF_UNIQUE_ID = "PREF_UNOQUE_ID";
-    DBConfiguration dbc = new DBConfiguration();
+//    DBConfiguration dbc = new DBConfiguration();
     static DBAccess dba = new DBAccess();
     public static ArrayList<Lab> listOfLabs = new ArrayList<Lab>();
     public static  ArrayList<String> listOfFavorites = new ArrayList<String>();
@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements Favorites.OnFragm
         setContentView(R.layout.activity_main);
 
         Context context = getApplicationContext();
-
 
         if(uniqueID == null){
             SharedPreferences sharedPrefs = context.getSharedPreferences(PREF_UNIQUE_ID, Context.MODE_PRIVATE);
@@ -49,16 +48,11 @@ public class MainActivity extends AppCompatActivity implements Favorites.OnFragm
                 editor.commit();
 
                 dba.saveUser(uniqueID);
-
             }
         }
+
         System.out.println("Unique ID is: " + uniqueID);
         populateLabList("CEIT");
-
-
-
-
-
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
          tabLayout.addTab(tabLayout.newTab());
@@ -87,60 +81,12 @@ public class MainActivity extends AppCompatActivity implements Favorites.OnFragm
 
             }
         });
-
-
-//        listView = (ExpandableListView) findViewById(R.id.listView);
-//        initData();
-//        listAdapter = new ExpandableListAdapter(this, listBuildingHeader, listHashMap);
-//        listView.setAdapter(listAdapter);
-        //setContentView(R.layout.activity_main);
-
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
-
-//    public void initData(){
-//
-//        listHashMap = new HashMap<String, java.util.List<String>>();
-//        listBuildingHeader = new ArrayList<>();
-//
-//        listBuildingHeader.add("IT Building");
-//        ArrayList<String> listOfLabsIT = populateLabList(listBuildingHeader.get(0));
-//
-//        listHashMap.put(listBuildingHeader.get(0),listOfLabsIT);
-//
-//        listBuildingHeader.add("COBA Building");
-//        ArrayList<String> listOfLabsCOBA = populateLabList(listBuildingHeader.get(1));
-//
-//        listHashMap.put(listBuildingHeader.get(1),listOfLabsCOBA);
-//    }
-//
-//    public ArrayList<String> populateLabList(String building){
-//
-//        ArrayList<String> listOfLabs = new ArrayList<String>();
-//
-//        if(building == "IT Building") {
-//            listOfLabs.add("1201");
-//            listOfLabs.add("1202");
-//            listOfLabs.add("1203");
-//            listOfLabs.add("1204");
-//            listOfLabs.add("1303");
-//            listOfLabs.add("2204");
-//            listOfLabs.add("2208");
-//            listOfLabs.add("2210");
-//            listOfLabs.add("2212");
-//            listOfLabs.add("3208");
-//            listOfLabs.add("3210");
-//            listOfLabs.add("3212");
-//            listOfLabs.add("3302");
-//            listOfLabs.add("3314");
-//        }
-//
-//        return listOfLabs;
-//    }
 
     public String getUUID(){
         return uniqueID;
@@ -149,13 +95,14 @@ public class MainActivity extends AppCompatActivity implements Favorites.OnFragm
     public void refreshFavoritesList(){
         listOfFavorites = populateFavoritesList(uniqueID);
     }
+
     public ArrayList<String> populateFavoritesList(String UUID){
         ArrayList<String> listOfFavorites = new ArrayList<String>();
         try {
             ResultSet rs = dba.getFavorites(uniqueID);
             while (rs.next()) {
                 String lab = rs.getString("LabID");
-                lab = lab.substring(lab.length() - 4);
+                //lab = lab.substring(lab.length() - 4);
 
                 listOfFavorites.add(lab);
             }
@@ -165,9 +112,8 @@ public class MainActivity extends AppCompatActivity implements Favorites.OnFragm
         }
         return listOfFavorites;
     }
+
     public static void  populateLabList(String building){
-
-
         dba = new DBAccess();
 
         try {
@@ -175,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements Favorites.OnFragm
 
             while (rs.next()) {
                 String lab = rs.getString("LabID");
-                lab = lab.substring(lab.length() - 4);
+                //lab = lab.substring(lab.length() - 4);
 
                 listOfLabs.add(new Lab(lab));
             }
@@ -183,8 +129,5 @@ public class MainActivity extends AppCompatActivity implements Favorites.OnFragm
         catch (SQLException e){
             e.printStackTrace();
         }
-
-       // return listOfLabs;
     }
-
 }

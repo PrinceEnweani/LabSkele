@@ -86,7 +86,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView roomLabel = (TextView) view.findViewById(R.id.tvLabNumber);
-        roomLabel.setText(child.getRoom());
+        roomLabel.setText(child.getRoom().substring(child.getRoom().length() - 4));
 
         TextView percentLabel = (TextView) view.findViewById(R.id.tvLabPercent);
         percentLabel.setText(child.getPercentage());

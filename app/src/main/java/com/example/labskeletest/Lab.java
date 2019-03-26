@@ -22,8 +22,6 @@ public class Lab {
         }
     }
 
-
-
     public void getItemStatus() throws SQLException {
 
         DBAccess dba = new DBAccess();
